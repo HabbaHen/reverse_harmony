@@ -8,6 +8,6 @@ For Android/IoS use Kivi for mobile GUI.
 
 For Windows, use NSIS for creating Windows Installer of the application, which includes a script for installing fluidsynth and ffmpeg (see https://stackoverflow.com/questions/74651215/couldnt-find-ffmpeg-or-avconv-python) on Windows.
 
-For Linux and macOs, create a build bash script
+For Linux and macOs, create a build bash script OR better create .deb for Debian/Ubuntu and .dmg for macOS 
 
 For other desktop OS, describe in README.md how to build the app manually (install fluidsynth and ffmpeg, then run python app using requirements.txt)
