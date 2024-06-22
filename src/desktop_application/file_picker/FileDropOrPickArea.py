@@ -1,14 +1,26 @@
 from os import path
-from PyQt5.QtWidgets import QLineEdit
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLineEdit, QVBoxLayout, QLabel
 
 
 class FileDropOrPickArea(QLineEdit):
 
-    def __init__(self, filePicker):
+    def __init__(self, filePicker, height):
+        if height <= 10:
+            raise ValueError("height must be greater than 10 for FileDropOrPickArea")
         super().__init__()
-        self.filename = None
         self.filePicker = filePicker
-        # todo
+        self.setFixedHeight(height)
+        self.setReadOnly(True)
+        layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignCenter)
+        image = QPixmap(":/resources/icons/drag-and-drop.svg").scaledToHeight(height - 10, Qt.SmoothTransformation)
+        dragAndDropImage = QLabel()
+        dragAndDropImage.setPixmap(image)
+        layout.addWidget(dragAndDropImage)
+        self.setLayout(layout)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -24,14 +36,13 @@ class FileDropOrPickArea(QLineEdit):
                     if path.isfile(localFile):
                         file = url.toLocalFile()
             if file is not None:
-                self._changeFilename(file)
+                self.changeFilename(file)
             event.acceptProposedAction()
 
-    def _changeFilename(self, filename):
+    def changeFilename(self, filename):
         self.filePicker.chosenFileLabel.changeFilename(filename)
         self.hide()
         self.filePicker.errorMessageLabel.hide()
         self.filePicker.chosenFileLabel.show()
-        self.filePicker.uploadButton.show()
         self.filePicker.crossButton.show()
         self.filePicker.endWidget.show()

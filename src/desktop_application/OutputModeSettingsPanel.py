@@ -1,3 +1,5 @@
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QButtonGroup, QRadioButton, QCheckBox)
 
 
@@ -15,7 +17,9 @@ class OutputModeSettingsPanel(QWidget):
         audioPreviewModeLayout = QVBoxLayout()
         # Radio buttons setup
         self.audioPreviewRadioButton = QRadioButton(self.AUDIO_PREVIEW_MODE)
+        self.audioPreviewRadioButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.saveAsMidiRadioButton = QRadioButton(self.SAVE_AS_MIDI_MODE)
+        self.saveAsMidiRadioButton.setCursor(QCursor(Qt.PointingHandCursor))
         outputModeLayout.addWidget(self.audioPreviewRadioButton, stretch=0)
         outputModeLayout.addWidget(self.saveAsMidiRadioButton, stretch=0)
         outputModeLayout.addStretch(stretch=1)
@@ -28,7 +32,9 @@ class OutputModeSettingsPanel(QWidget):
         self.saveAsMidiRadioButton.toggled.connect(self.onToggle)
         # Audio Preview checkboxes setup
         self.autoPlayAudioCheckbox = QCheckBox(self.AUTO_PLAY_CHECKBOX)
+        self.autoPlayAudioCheckbox.setCursor(QCursor(Qt.PointingHandCursor))
         self.startAheadCheckbox = QCheckBox(self.START_AHEAD_CHECKBOX)
+        self.startAheadCheckbox.setCursor(QCursor(Qt.PointingHandCursor))
         audioPreviewModeLayout.addWidget(self.autoPlayAudioCheckbox, stretch=0)
         audioPreviewModeLayout.addWidget(self.startAheadCheckbox, stretch=0)
         audioPreviewModeLayout.addStretch(stretch=1)
