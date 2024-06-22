@@ -47,8 +47,8 @@ class InputFilePicker(QWidget):
         self.loadingGif = QMovie(":/resources/loading.gif")
         self.loadingGif.setScaledSize(QSize(height, height))
         self.loadingLabel.setMovie(self.loadingGif)
-        self.loadingGif.start()
         self.loadingLabel.hide()
+        self.loadingGif.stop()
         layout.addWidget(self.loadingLabel, stretch=0)
         self.endWidget = QWidget()
         self.endWidget.hide()
@@ -72,6 +72,7 @@ class InputFilePicker(QWidget):
 
     def onFileUpload(self):
         self.loadingLabel.show()
+        self.loadingGif.start()
         self.uploadButton.setDisabled(True)
         self.crossButton.setDisabled(True)
         self.chosenFileLabel.setDisabled(True)
