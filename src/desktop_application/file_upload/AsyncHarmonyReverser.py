@@ -1,6 +1,6 @@
 import time
 
-from PyQt5.QtCore import QRunnable, QThread
+from PyQt5.QtCore import QRunnable
 
 
 class AsyncHarmonyReverser(QRunnable):
@@ -11,10 +11,5 @@ class AsyncHarmonyReverser(QRunnable):
 
     def run(self):
         time.sleep(5) # todo - harmony reverse here
-        # todo - move below code to be executed by main thread
-        self.filePicker.uploadButton.setDisabled(False)
-        self.filePicker.crossButton.setDisabled(False)
-        self.filePicker.chosenFileLabel.setDisabled(False)
-        self.filePicker.fileDropArea.setDisabled(False)
-        self.filePicker.loadingLabel.hide()
-        self.filePicker.loadingGif.stop()
+        self.filePicker.harmonyReverseResult = None # todo
+        self.filePicker.fileUploadFinished.emit()

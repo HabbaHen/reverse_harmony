@@ -1,9 +1,9 @@
 import time
 from os import path
 
-from PyQt5.QtCore import Qt, QSize, QThreadPool
+from PyQt5.QtCore import Qt, QSize, QThreadPool, pyqtSignal
 from PyQt5.QtGui import QIcon, QCursor, QMovie
-from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton, QApplication
+from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton
 
 import resources
 from src.desktop_application.file_picker.FileDropLineEdit import FileDropLineEdit
@@ -14,8 +14,11 @@ from src.desktop_application.file_upload.FileUpload import FileUpload
 
 class InputFilePicker(QWidget):
 
+    fileUploadFinished = pyqtSignal()
+
     def __init__(self, maxFileNameLengthShown, height):
         super().__init__()
+        self.fileUploadFinished.connect(self.onFileUploadFinished)
         layout = QHBoxLayout()
         layout.setAlignment(Qt.AlignTop)
         self.fileDropArea = FileDropOrPickArea(self, height)
@@ -54,6 +57,7 @@ class InputFilePicker(QWidget):
         self.endWidget.hide()
         layout.addWidget(self.endWidget, stretch=1)
         self.setLayout(layout)
+        self.harmonyReverseResult = None
 
     def onCrossButtonClicked(self):
         self.chosenFileLabel.hide()
@@ -70,7 +74,7 @@ class InputFilePicker(QWidget):
             elif self.fileDropArea.isVisible():
                 self.fileDropArea.changeFilename(filename)
 
-    def onFileUpload(self):
+    def onFileUploadStart(self):
         self.loadingLabel.show()
         self.loadingGif.start()
         self.uploadButton.setDisabled(True)
@@ -78,3 +82,14 @@ class InputFilePicker(QWidget):
         self.chosenFileLabel.setDisabled(True)
         self.fileDropArea.setDisabled(True)
         QThreadPool.globalInstance().start(AsyncHarmonyReverser(self))
+
+    def onFileUploadFinished(self):
+        self.uploadButton.setDisabled(False)
+        self.crossButton.setDisabled(False)
+        self.chosenFileLabel.setDisabled(False)
+        self.fileDropArea.setDisabled(False)
+        self.loadingLabel.hide()
+        self.loadingGif.stop()
+        if self.harmonyReverseResult is None:
+            return
+        pass # todo

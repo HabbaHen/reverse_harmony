@@ -42,7 +42,7 @@ class FileDropLineEdit(QLineEdit):
         self.setText(displayedText)
         self._resizeLineEditOfChosenFile(displayedText)
         self.setToolTip(self.filename)
-        self.filePicker.onFileUpload()
+        self.filePicker.onFileUploadStart()
 
     def _resizeLineEditOfChosenFile(self, displayedText):
         fontMetrics = self.fontMetrics()
