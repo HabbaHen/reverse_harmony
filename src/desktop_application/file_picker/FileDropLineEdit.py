@@ -20,6 +20,7 @@ class FileDropLineEdit(QLineEdit):
             event.acceptProposedAction()
 
     def dropEvent(self, event):
+        self.filePicker.errorMessageLabel.hide()
         md = event.mimeData()
         if md.hasUrls():
             file = None

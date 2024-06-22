@@ -27,6 +27,7 @@ class FileDropOrPickArea(QLineEdit):
             event.acceptProposedAction()
 
     def dropEvent(self, event):
+        self.filePicker.errorMessageLabel.hide()
         md = event.mimeData()
         if md.hasUrls():
             file = None
@@ -41,7 +42,6 @@ class FileDropOrPickArea(QLineEdit):
 
     def changeFilename(self, filename):
         self.hide()
-        self.filePicker.errorMessageLabel.hide()
         self.filePicker.chosenFileLabel.show()
         self.filePicker.crossButton.show()
         self.filePicker.endWidget.show()

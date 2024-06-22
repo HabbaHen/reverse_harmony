@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon, QCursor, QMovie
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton
 
 import resources
+from src.desktop_application.css import CSS
 from src.desktop_application.file_picker.FileDropLineEdit import FileDropLineEdit
 from src.desktop_application.file_picker.FileDropOrPickArea import FileDropOrPickArea
 from src.desktop_application.file_upload.AsyncHarmonyReverser import AsyncHarmonyReverser
@@ -43,6 +44,7 @@ class InputFilePicker(QWidget):
         layout.addWidget(self.uploadButton, stretch=0)
         layout.addWidget(self.crossButton)
         self.errorMessageLabel = QLabel()
+        self.errorMessageLabel.setStyleSheet(CSS.ERROR_MESSAGE_STYLE)
         self.errorMessageLabel.hide()
         layout.addWidget(self.errorMessageLabel, stretch=0)
         self.loadingLabel = QLabel()
@@ -57,16 +59,17 @@ class InputFilePicker(QWidget):
         self.endWidget.hide()
         layout.addWidget(self.endWidget, stretch=1)
         self.setLayout(layout)
-        self.harmonyReverseResult = None
+        self.fileUploadResult = (None, None)
 
     def onCrossButtonClicked(self):
+        self.errorMessageLabel.hide()
         self.chosenFileLabel.hide()
         self.crossButton.hide()
-        self.errorMessageLabel.hide()
         self.endWidget.hide()
         self.fileDropArea.show()
 
     def onUploadButtonClicked(self):
+        self.errorMessageLabel.hide()
         filename = FileUpload.uploadInputFile("Upload Audio File")
         if filename and path.isfile(filename):
             if self.chosenFileLabel.isVisible():
@@ -90,6 +93,10 @@ class InputFilePicker(QWidget):
         self.fileDropArea.setDisabled(False)
         self.loadingLabel.hide()
         self.loadingGif.stop()
-        if self.harmonyReverseResult is None:
+        errorMessage, result = self.fileUploadResult
+        if errorMessage is not None:
+            self.onCrossButtonClicked()
+            self.errorMessageLabel.setText(errorMessage)
+            self.errorMessageLabel.show()
             return
         pass # todo

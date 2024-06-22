@@ -10,6 +10,6 @@ class AsyncHarmonyReverser(QRunnable):
         self.filePicker = filePicker
 
     def run(self):
-        time.sleep(5) # todo - harmony reverse here
-        self.filePicker.harmonyReverseResult = None # todo
+        time.sleep(1) # todo - harmony reverse here
+        self.filePicker.fileUploadResult = ("TEST ERROR", None) # todo - (errorMessage, result)
         self.filePicker.fileUploadFinished.emit()
