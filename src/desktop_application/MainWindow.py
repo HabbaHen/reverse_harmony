@@ -1,9 +1,8 @@
-from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import (QWidget, QMainWindow, QPushButton, QVBoxLayout)
 from src.desktop_application.OutputModeSettingsPanel import OutputModeSettingsPanel
-from src.desktop_application.css import CSS
+from src.desktop_application.CSS import CSS
 from src.desktop_application.file_picker.InputFilePicker import InputFilePicker
 
 

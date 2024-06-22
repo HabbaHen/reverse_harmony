@@ -1,6 +1,5 @@
-import time
-
 from PyQt5.QtCore import QRunnable
+from src.backend.HarmonyReverser import HarmonyReverser
 
 
 class AsyncHarmonyReverser(QRunnable):
@@ -10,6 +9,17 @@ class AsyncHarmonyReverser(QRunnable):
         self.filePicker = filePicker
 
     def run(self):
-        time.sleep(1) # todo - harmony reverse here
-        self.filePicker.fileUploadResult = ("TEST ERROR", None) # todo - (errorMessage, result)
+        filename = self.filePicker.chosenFileLabel.toolTip()
+        harmonyReverser = HarmonyReverser(filename)
+        if harmonyReverser.getErrorMessage() is not None:
+            self._finish(harmonyReverser.getErrorMessage(), None)
+            return
+        reversedAudio = harmonyReverser.reverseHarmony()
+        if harmonyReverser.getErrorMessage() is not None:
+            self._finish(harmonyReverser.getErrorMessage(), None)
+            return
+        self._finish(None, reversedAudio)
+
+    def _finish(self, errorMessage, result):
+        self.filePicker.fileUploadResult = (errorMessage, result)
         self.filePicker.fileUploadFinished.emit()

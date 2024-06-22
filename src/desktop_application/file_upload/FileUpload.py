@@ -5,13 +5,13 @@ import resources
 
 class FileUpload:
 
-    UPLOAD_FILTER = "Audio (*.mid *.wav *.mp3)"
+    UPLOAD_FILTER = "MIDI Files (*.mid)"
     APP = None
 
     @staticmethod
     def uploadInputFile(caption):
         filename, fileFilter = QFileDialog.getOpenFileName(caption=caption,
-                                                           filter="All Files (*);;Audio (*.mid *.wav *.mp3)",
+                                                           filter="All Files (*);;MIDI Files (*.mid)",
                                                            initialFilter=FileUpload.UPLOAD_FILTER)
         FileUpload.UPLOAD_FILTER = fileFilter
         FileUpload._fixAppIcon()

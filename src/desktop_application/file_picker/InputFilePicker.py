@@ -1,4 +1,3 @@
-import time
 from os import path
 
 from PyQt5.QtCore import Qt, QSize, QThreadPool, pyqtSignal
@@ -6,7 +5,7 @@ from PyQt5.QtGui import QIcon, QCursor, QMovie
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton
 
 import resources
-from src.desktop_application.css import CSS
+from src.desktop_application.CSS import CSS
 from src.desktop_application.file_picker.FileDropLineEdit import FileDropLineEdit
 from src.desktop_application.file_picker.FileDropOrPickArea import FileDropOrPickArea
 from src.desktop_application.file_upload.AsyncHarmonyReverser import AsyncHarmonyReverser
@@ -93,10 +92,10 @@ class InputFilePicker(QWidget):
         self.fileDropArea.setDisabled(False)
         self.loadingLabel.hide()
         self.loadingGif.stop()
-        errorMessage, result = self.fileUploadResult
+        errorMessage, reversedAudio = self.fileUploadResult
         if errorMessage is not None:
             self.onCrossButtonClicked()
             self.errorMessageLabel.setText(errorMessage)
             self.errorMessageLabel.show()
             return
-        pass # todo
+        pass # todo - handle audio player setup
