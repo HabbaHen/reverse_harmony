@@ -16,7 +16,7 @@ class FileDropOrPickArea(QLineEdit):
         self.setReadOnly(True)
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
-        image = QPixmap(":/resources/icons/drag-and-drop.svg").scaledToHeight(height - 10, Qt.SmoothTransformation)
+        image = QPixmap(":/resources/drag-and-drop.svg").scaledToHeight(height - 10, Qt.SmoothTransformation)
         dragAndDropImage = QLabel()
         dragAndDropImage.setPixmap(image)
         layout.addWidget(dragAndDropImage)
@@ -40,9 +40,9 @@ class FileDropOrPickArea(QLineEdit):
             event.acceptProposedAction()
 
     def changeFilename(self, filename):
-        self.filePicker.chosenFileLabel.changeFilename(filename)
         self.hide()
         self.filePicker.errorMessageLabel.hide()
         self.filePicker.chosenFileLabel.show()
         self.filePicker.crossButton.show()
         self.filePicker.endWidget.show()
+        self.filePicker.chosenFileLabel.changeFilename(filename)

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QLineEdit
 
 class FileDropLineEdit(QLineEdit):
 
-    def __init__(self, maxLength, height):
+    def __init__(self, maxLength, height, filePicker):
         if maxLength <= 5:
             raise ValueError("maxLength must be greater than 5 for FileDropLineEdit")
         super().__init__()
@@ -13,6 +13,7 @@ class FileDropLineEdit(QLineEdit):
         self.setText("")
         self.setToolTip("")
         self.setMinimumHeight(height)
+        self.filePicker = filePicker
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -41,6 +42,7 @@ class FileDropLineEdit(QLineEdit):
         self.setText(displayedText)
         self._resizeLineEditOfChosenFile(displayedText)
         self.setToolTip(self.filename)
+        self.filePicker.onFileUpload()
 
     def _resizeLineEditOfChosenFile(self, displayedText):
         fontMetrics = self.fontMetrics()

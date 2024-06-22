@@ -26,7 +26,7 @@ class FileUpload:
     @staticmethod
     def _fixAppIcon():
         if FileUpload.APP is not None:
-            FileUpload.APP.setWindowIcon(QIcon(":/resources/icons/harmony_reverse_tool_icon.png"))
+            FileUpload.APP.setWindowIcon(QIcon(":/resources/harmony_reverse_tool_icon.png"))
 
     def __init__(self):
         raise RuntimeError("FileUpload class is not instantiable")
