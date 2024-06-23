@@ -13,26 +13,33 @@ class HarmonyReverser:
         return filename.endswith(".mid")
 
     def __init__(self, filename):
-        self.errorMessage = None
+        self._errorMessage = None
         if not self._fileIsMIDI(filename):
-            self.errorMessage = "Only MIDI files supported"
+            self._errorMessage = "Only MIDI files supported"
             return
-        self.midiFile = self._readMidiFile(filename)
+        self._midiFile = self._readMidiFile(filename)
 
     def getErrorMessage(self):
-        return self.errorMessage
+        return self._errorMessage
+
+    def getOriginalAudioInMp3Format(self):
+        # self._midiFile - contains midi file
+        pass # todo
 
     """ Uses default strategy for musical instruments volumes """
-    def reverseHarmony(self):
-        # self.midiFile - contains midi file
+    def getReversedAudioInMp3Format(self):
+        # self._midiFile - contains midi file
         pass # todo
 
     def _readMidiFile(self, filename):
         try:
             return pretty_midi.PrettyMIDI(filename)
         except (ValueError, OSError, EOFError):
-            print("Tried to read MIDI file, but it's probably not MIDI file", file=sys.stderr)
-            with open(ErrorHandle.TRACEBACK_FILE, 'rt') as tracebackFile:
+            tracebackErrorMessage = "Tried to read MIDI file, but it's probably not MIDI file"
+            print(tracebackErrorMessage, file=sys.stderr)
+            with open(ErrorHandle.TRACEBACK_FILE, 'wt') as tracebackFile:
                 traceback.print_stack(file=tracebackFile)
-            self.errorMessage = "Failed to read file"
+                tracebackFile.write("\n")
+                tracebackFile.write(tracebackErrorMessage)
+            self._errorMessage = "Failed to read file"
             return None
