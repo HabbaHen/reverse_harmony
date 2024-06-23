@@ -34,12 +34,7 @@ class HarmonyReverser:
     def _readMidiFile(self, filename):
         try:
             return pretty_midi.PrettyMIDI(filename)
-        except (ValueError, OSError, EOFError):
-            tracebackErrorMessage = "Tried to read MIDI file, but it's probably not MIDI file"
-            print(tracebackErrorMessage, file=sys.stderr)
-            with open(ErrorHandle.TRACEBACK_FILE, 'wt') as tracebackFile:
-                traceback.print_stack(file=tracebackFile)
-                tracebackFile.write("\n")
-                tracebackFile.write(tracebackErrorMessage)
+        except (ValueError, OSError, EOFError) as error:
+            ErrorHandle.handleError(error, "Tried to read MIDI file, but it's probably not MIDI file")
             self._errorMessage = "Failed to read file"
             return None

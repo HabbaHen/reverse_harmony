@@ -14,7 +14,7 @@ class AsyncHarmonyReverser(QRunnable):
         if harmonyReverser.getErrorMessage() is not None:
             self._finish(harmonyReverser.getErrorMessage(), None)
             return
-        reversedAudio = harmonyReverser.reverseHarmony()
+        reversedAudio = harmonyReverser.getReversedAudioInMp3Format()
         if harmonyReverser.getErrorMessage() is not None:
             self._finish(harmonyReverser.getErrorMessage(), None)
             return
