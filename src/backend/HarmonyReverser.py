@@ -24,6 +24,7 @@ class HarmonyReverser:
 
     """ Uses default strategy for musical instruments volumes """
     def reverseHarmony(self):
+        # self.midiFile - contains midi file
         pass # todo
 
     def _readMidiFile(self, filename):
