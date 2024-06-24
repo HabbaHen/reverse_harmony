@@ -1,6 +1,3 @@
-import sys
-import traceback
-
 from pretty_midi import pretty_midi
 
 from src.backend.ErrorHandle import ErrorHandle
