@@ -15,23 +15,6 @@ class FileDropLineEdit(QLineEdit):
         self.setMinimumHeight(height)
         self.filePicker = filePicker
 
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
-            event.acceptProposedAction()
-
-    def dropEvent(self, event):
-        self.filePicker.errorMessageLabel.hide()
-        md = event.mimeData()
-        if md.hasUrls():
-            file = None
-            for url in md.urls():
-                localFile = url.toLocalFile()
-                if localFile and path.isfile(localFile):
-                    file = localFile
-            if file is not None:
-                self.changeFilename(file)
-            event.acceptProposedAction()
-
     def changeFilename(self, filename):
         self.filename = filename
         displayedText = self.filename

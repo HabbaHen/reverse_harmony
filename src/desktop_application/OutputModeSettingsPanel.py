@@ -2,11 +2,13 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QButtonGroup, QRadioButton, QCheckBox)
 
+from src.desktop_application.EntryPoints import EntryPoints
+
 
 class OutputModeSettingsPanel(QWidget):
 
     AUDIO_PREVIEW_MODE = "Audio Preview"
-    SAVE_AS_MIDI_MODE = "Save Audio as .mp3"
+    SAVE_AUDIO_AS_MP3_MODE = "Save Audio as .mp3"
     AUTO_PLAY_CHECKBOX = "Auto-Play Audio"
     START_AHEAD_CHECKBOX = "Start Ahead (by 10 seconds)"
 
@@ -18,18 +20,18 @@ class OutputModeSettingsPanel(QWidget):
         # Radio buttons setup
         self.audioPreviewRadioButton = QRadioButton(self.AUDIO_PREVIEW_MODE)
         self.audioPreviewRadioButton.setCursor(QCursor(Qt.PointingHandCursor))
-        self.saveAsMidiRadioButton = QRadioButton(self.SAVE_AS_MIDI_MODE)
-        self.saveAsMidiRadioButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.saveAudioAsMp3RadioButton = QRadioButton(self.SAVE_AUDIO_AS_MP3_MODE)
+        self.saveAudioAsMp3RadioButton.setCursor(QCursor(Qt.PointingHandCursor))
         outputModeLayout.addWidget(self.audioPreviewRadioButton, stretch=0)
-        outputModeLayout.addWidget(self.saveAsMidiRadioButton, stretch=0)
+        outputModeLayout.addWidget(self.saveAudioAsMp3RadioButton, stretch=0)
         outputModeLayout.addStretch(stretch=1)
         outputModeRadioButtonGroup = QButtonGroup(self)
         outputModeRadioButtonGroup.addButton(self.audioPreviewRadioButton)
-        outputModeRadioButtonGroup.addButton(self.saveAsMidiRadioButton)
+        outputModeRadioButtonGroup.addButton(self.saveAudioAsMp3RadioButton)
         outputModeRadioButtonGroup.setExclusive(True)
         self.audioPreviewRadioButton.setChecked(True)
         self.audioPreviewRadioButton.toggled.connect(self.onToggle)
-        self.saveAsMidiRadioButton.toggled.connect(self.onToggle)
+        self.saveAudioAsMp3RadioButton.toggled.connect(self.onToggle)
         # Audio Preview checkboxes setup
         self.autoPlayAudioCheckbox = QCheckBox(self.AUTO_PLAY_CHECKBOX)
         self.autoPlayAudioCheckbox.setCursor(QCursor(Qt.PointingHandCursor))
@@ -51,8 +53,8 @@ class OutputModeSettingsPanel(QWidget):
     def getOutputMode(self):
         if self.audioPreviewRadioButton.isChecked():
             return self.AUDIO_PREVIEW_MODE
-        if self.saveAsMidiRadioButton.isChecked():
-            return self.SAVE_AS_MIDI_MODE
+        if self.saveAudioAsMp3RadioButton.isChecked():
+            return self.SAVE_AUDIO_AS_MP3_MODE
         return None
 
     def getAutoPlayIsTurnedOn(self):
@@ -62,6 +64,7 @@ class OutputModeSettingsPanel(QWidget):
         return self.getAutoPlayIsTurnedOn() and self.startAheadCheckbox.isChecked()
 
     def onToggle(self):
+        EntryPoints.MAIN_WINDOW.onOutputModeSettingsPanelToggle(self)
         if not self.audioPreviewRadioButton.isChecked():
             self.autoPlayAudioCheckbox.hide()
             self.startAheadCheckbox.hide()

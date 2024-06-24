@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton
 
 import resources
 from src.desktop_application.CSS import CSS
+from src.desktop_application.EntryPoints import EntryPoints
 from src.desktop_application.file_picker.FileDropLineEdit import FileDropLineEdit
 from src.desktop_application.file_picker.FileDropOrPickArea import FileDropOrPickArea
 from src.desktop_application.file_upload.AsyncHarmonyReverser import AsyncHarmonyReverser
@@ -58,16 +59,19 @@ class InputFilePicker(QWidget):
         self.endWidget.hide()
         layout.addWidget(self.endWidget, stretch=1)
         self.setLayout(layout)
-        self.fileUploadResult = (None, None)
+        self.fileUploadResult = (None, None, None)
 
     def onCrossButtonClicked(self):
+        EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.hideFeedbackMessage()
         self.errorMessageLabel.hide()
         self.chosenFileLabel.hide()
         self.crossButton.hide()
         self.endWidget.hide()
         self.fileDropArea.show()
+        EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.setDisabledState()
 
     def onUploadButtonClicked(self):
+        EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.hideFeedbackMessage()
         self.errorMessageLabel.hide()
         filename = FileUpload.uploadInputFile("Upload Audio File")
         if filename and path.isfile(filename):
@@ -77,6 +81,7 @@ class InputFilePicker(QWidget):
                 self.fileDropArea.changeFilename(filename)
 
     def onFileUploadStart(self):
+        EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.hideFeedbackMessage()
         self.loadingLabel.show()
         self.loadingGif.start()
         self.uploadButton.setDisabled(True)
@@ -92,10 +97,9 @@ class InputFilePicker(QWidget):
         self.fileDropArea.setDisabled(False)
         self.loadingLabel.hide()
         self.loadingGif.stop()
-        errorMessage, reversedAudio = self.fileUploadResult
+        errorMessage, originalAudio, reversedAudio = self.fileUploadResult
         if errorMessage is not None:
             self.onCrossButtonClicked()
-            self.errorMessageLabel.setText(errorMessage)
-            self.errorMessageLabel.show()
+            EntryPoints.MAIN_WINDOW.showErrorMessage(errorMessage)
             return
-        pass # todo - handle audio player setup
+        EntryPoints.MAIN_WINDOW.handleAudioSetup(originalAudio, reversedAudio)

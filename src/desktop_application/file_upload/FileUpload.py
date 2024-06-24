@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 import resources
+from src.desktop_application.EntryPoints import EntryPoints
 
 
 class FileUpload:
@@ -19,7 +20,15 @@ class FileUpload:
 
     @staticmethod
     def chooseOutputFile(caption):
-        filename, _ = QFileDialog.getSaveFileName(caption=caption, filter="MP3 (*.mp3)")
+        inputFilename = EntryPoints.MAIN_WINDOW.getCurrentlyChosenFilename()
+        if inputFilename:
+            if inputFilename.endswith(".mid"):
+                inputFilename = inputFilename[:-4] + "-reversed.mp3"
+            filename, _ = QFileDialog.getSaveFileName(caption=caption, directory=inputFilename,
+                                                      filter="All Files (*)", initialFilter="All Files (*)")
+        else:
+            filename, _ = QFileDialog.getSaveFileName(caption=caption, filter="All Files (*)",
+                                                      initialFilter="All Files (*)")
         FileUpload._fixAppIcon()
         return filename
 

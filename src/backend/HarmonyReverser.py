@@ -34,7 +34,7 @@ class HarmonyReverser:
     def _readMidiFile(self, filename):
         try:
             return pretty_midi.PrettyMIDI(filename)
-        except (ValueError, OSError, EOFError) as error:
+        except Exception as error:
             ErrorHandle.handleError(error, "Tried to read MIDI file, but it's probably not MIDI file")
-            self._errorMessage = "Failed to process MIDI file"
+            self._errorMessage = "Failed to open or process MIDI file"
             return None
