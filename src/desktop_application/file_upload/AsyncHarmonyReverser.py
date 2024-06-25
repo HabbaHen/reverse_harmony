@@ -1,7 +1,6 @@
-import time
-
 from PyQt5.QtCore import QRunnable
 from src.backend.HarmonyReverser import HarmonyReverser
+from src.desktop_application.EntryPoints import EntryPoints
 
 
 class AsyncHarmonyReverser(QRunnable):
@@ -11,7 +10,7 @@ class AsyncHarmonyReverser(QRunnable):
         self.filePicker = filePicker
 
     def run(self):
-        filename = self.filePicker.chosenFileLabel.toolTip()
+        filename = EntryPoints.MAIN_WINDOW.getCurrentlyChosenFilename()
         harmonyReverser = HarmonyReverser(filename)
         if harmonyReverser.getErrorMessage() is not None:
             self._finish(harmonyReverser.getErrorMessage(), None, None)

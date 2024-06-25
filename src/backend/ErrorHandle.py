@@ -2,11 +2,12 @@ import os
 import sys
 import traceback
 
+from paths import Paths
+
 
 class ErrorHandle:
 
-    APP_DIRECTORY = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    TRACEBACK_FILE = os.path.join(APP_DIRECTORY, "error_traceback.txt")
+    TRACEBACK_FILE = os.path.join(Paths.APP_DIRECTORY, "error_traceback.txt")
 
     @staticmethod
     def handleError(error, tracebackErrorMessage):
