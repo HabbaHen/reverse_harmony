@@ -1,3 +1,5 @@
+from os import path
+
 from PyQt5.QtWidgets import (QMainWindow, QVBoxLayout)
 
 from src.desktop_application.CentralWidget import CentralWidget
@@ -32,6 +34,16 @@ class MainWindow(QMainWindow):
     def showErrorMessage(self, errorMessage):
         self.inputFilePicker.errorMessageLabel.setText(errorMessage)
         self.inputFilePicker.errorMessageLabel.show()
+
+    """ Return True if file is fine, False otherwise. """
+    def handleBigSizeInputFileUpload(self, filename):
+        try:
+            if path.getsize(filename) > 500 * 1024 * 1024:
+                EntryPoints.MAIN_WINDOW.showErrorMessage("File size is too big (> 500 MB)")
+                return False
+        except OSError:
+            return False
+        return True
 
     def handleAudioSetup(self, originalAudio, reversedAudio):
         self.saveFileAsMp3Stripe.setEnabledState()

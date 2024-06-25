@@ -2,6 +2,8 @@ from os import path
 
 from PyQt5.QtWidgets import QWidget
 
+from src.desktop_application.EntryPoints import EntryPoints
+
 
 class CentralWidget(QWidget):
 
@@ -28,6 +30,8 @@ class CentralWidget(QWidget):
             event.acceptProposedAction()
 
     def _changeFilename(self, filename):
+        if not EntryPoints.MAIN_WINDOW.handleBigSizeInputFileUpload(filename):
+            return
         if self.mainWindow.inputFilePicker.chosenFileLabel.isVisible():
             self.mainWindow.inputFilePicker.chosenFileLabel.changeFilename(filename)
         elif self.mainWindow.inputFilePicker.fileDropArea.isVisible():

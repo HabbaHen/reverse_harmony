@@ -37,6 +37,11 @@ class SaveFileButton(QWidget):
         self.saveFileButton.setDisabled(True)
         self.saveFileButton.setToolTip(self.DISABLED_STATE_TOOLTIP)
 
+    def setDisabledStateWithTooltip(self, tooltipText):
+        self.hideFeedbackMessage()
+        self.saveFileButton.setDisabled(True)
+        self.saveFileButton.setToolTip(tooltipText)
+
     def setEnabledState(self):
         self.saveFileButton.setDisabled(False)
         self.saveFileButton.setToolTip("")

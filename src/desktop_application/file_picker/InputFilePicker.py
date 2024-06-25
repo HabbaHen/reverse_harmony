@@ -75,6 +75,8 @@ class InputFilePicker(QWidget):
         self.errorMessageLabel.hide()
         filename = FileUpload.uploadInputFile("Upload Audio File")
         if filename and path.isfile(filename):
+            if not EntryPoints.MAIN_WINDOW.handleBigSizeInputFileUpload(filename):
+                return
             if self.chosenFileLabel.isVisible():
                 self.chosenFileLabel.changeFilename(filename)
             elif self.fileDropArea.isVisible():
@@ -88,6 +90,8 @@ class InputFilePicker(QWidget):
         self.crossButton.setDisabled(True)
         self.chosenFileLabel.setDisabled(True)
         self.fileDropArea.setDisabled(True)
+        EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.setDisabledStateWithTooltip("")
+        EntryPoints.MAIN_WINDOW.centralWidget().setAcceptDrops(False)
         QThreadPool.globalInstance().start(AsyncHarmonyReverser(self))
 
     def onFileUploadFinished(self):
@@ -95,6 +99,8 @@ class InputFilePicker(QWidget):
         self.crossButton.setDisabled(False)
         self.chosenFileLabel.setDisabled(False)
         self.fileDropArea.setDisabled(False)
+        EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.setEnabledState()
+        EntryPoints.MAIN_WINDOW.centralWidget().setAcceptDrops(True)
         self.loadingLabel.hide()
         self.loadingGif.stop()
         errorMessage, originalAudio, reversedAudio = self.fileUploadResult

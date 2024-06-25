@@ -1,3 +1,5 @@
+import time
+
 from PyQt5.QtCore import QRunnable
 from src.backend.HarmonyReverser import HarmonyReverser
 

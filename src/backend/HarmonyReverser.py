@@ -1,5 +1,5 @@
 from pretty_midi import pretty_midi
-
+from midi2audio import FluidSynth
 from src.backend.ErrorHandle import ErrorHandle
 
 
