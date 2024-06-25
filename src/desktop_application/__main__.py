@@ -17,6 +17,8 @@ def cleanUp():
         os.remove(HarmonyReverser.TEMPORARY_ORIGINAL_AUDIO_MP3_FILE)
     if os.path.exists(HarmonyReverser.TEMPORARY_REVERSED_AUDIO_MP3_FILE):
         os.remove(HarmonyReverser.TEMPORARY_REVERSED_AUDIO_MP3_FILE)
+    if os.path.exists(HarmonyReverser.TEMPORARY_REVERSED_MIDI_FILE):
+        os.remove(HarmonyReverser.TEMPORARY_REVERSED_MIDI_FILE)
 
 
 cleanUp()

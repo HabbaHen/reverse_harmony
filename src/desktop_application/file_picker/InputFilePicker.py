@@ -103,9 +103,9 @@ class InputFilePicker(QWidget):
         EntryPoints.MAIN_WINDOW.centralWidget().setAcceptDrops(True)
         self.loadingLabel.hide()
         self.loadingGif.stop()
-        errorMessage, originalAudio, reversedAudio = self.fileUploadResult
+        errorMessage, originalAudioFile, reversedAudioFile = self.fileUploadResult
         if errorMessage is not None:
             self.onCrossButtonClicked()
             EntryPoints.MAIN_WINDOW.showErrorMessage(errorMessage)
             return
-        EntryPoints.MAIN_WINDOW.handleAudioSetup(originalAudio, reversedAudio)
+        EntryPoints.MAIN_WINDOW.handleAudioSetup(originalAudioFile, reversedAudioFile)

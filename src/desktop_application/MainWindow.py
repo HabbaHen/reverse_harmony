@@ -27,6 +27,8 @@ class MainWindow(QMainWindow):
         centralWidget.setLayout(layout)
         self.setCentralWidget(centralWidget)
         self.resize(640, 400)
+        self.originalAudioFile = None
+        self.reversedAudioFile = None
 
     def getCurrentlyChosenFilename(self):
         return self.inputFilePicker.chosenFileLabel.toolTip()
@@ -45,9 +47,11 @@ class MainWindow(QMainWindow):
             return False
         return True
 
-    def handleAudioSetup(self, originalAudio, reversedAudio):
+    def handleAudioSetup(self, originalAudioFile, reversedAudioFile):
         self.saveFileAsMp3Stripe.setEnabledState()
-        pass # todo
+        self.originalAudioFile = originalAudioFile
+        self.reversedAudioFile = reversedAudioFile
+        pass # todo - later
 
     def onOutputModeSettingsPanelToggle(self, settingsPanel):
         if not(settingsPanel.saveAudioAsMp3RadioButton.isChecked()) and self.saveFileAsMp3Stripe.isVisible():
@@ -55,13 +59,13 @@ class MainWindow(QMainWindow):
         if settingsPanel.saveAudioAsMp3RadioButton.isChecked() and self.saveFileAsMp3Stripe.isHidden():
             self.onSaveAudioAsMp3ModeSwitchedTo()
             return
-        pass # todo
+        pass # todo - later
 
     def onAudioPreviewModeSwitchedFrom(self):
-        pass # todo
+        pass # todo - later
 
     def onAudioPreviewModeSwitchedTo(self):
-        pass # todo
+        pass # todo - later
 
     def onSaveAudioAsMp3ModeSwitchedFrom(self):
         self.saveFileAsMp3Stripe.hideFeedbackMessage()

@@ -1,3 +1,4 @@
+import os
 from os import path
 
 from midi2audio import FluidSynth
@@ -10,6 +11,7 @@ from src.backend.ErrorHandle import ErrorHandle
 class HarmonyReverser:
 
     DEFAULT_SOUND_FONT = path.join(Paths.APP_DIRECTORY, "default.sf2")
+    TEMPORARY_DIRECTORY = path.join(Paths.APP_DIRECTORY, "temp")
     TEMPORARY_CONVERSION_FILE = path.join(Paths.APP_DIRECTORY, "temp/temp")
     TEMPORARY_ORIGINAL_AUDIO_MP3_FILE = path.join(Paths.APP_DIRECTORY, "temp/original_temp")
     TEMPORARY_REVERSED_AUDIO_MP3_FILE = path.join(Paths.APP_DIRECTORY, "temp/reversed_temp")
@@ -20,6 +22,8 @@ class HarmonyReverser:
         return filename.endswith(".mid")
 
     def __init__(self, filename):
+        if not path.isdir(self.TEMPORARY_DIRECTORY):
+            os.makedirs(self.TEMPORARY_DIRECTORY)
         self._errorMessage = None
         if not self._fileIsMIDI(filename):
             self._errorMessage = "Only MIDI files supported (.mid)"

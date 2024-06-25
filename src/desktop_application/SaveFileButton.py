@@ -1,8 +1,11 @@
+import shutil
+
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel
 
 from src.desktop_application.CSS import CSS
+from src.desktop_application.EntryPoints import EntryPoints
 from src.desktop_application.file_upload.FileUpload import FileUpload
 
 
@@ -51,14 +54,17 @@ class SaveFileButton(QWidget):
 
     def onSaveFileButtonClicked(self):
         self.hideFeedbackMessage()
-        filename = FileUpload.chooseOutputFile("Save MP3 file as...")
-        if not filename:
+        saveFileName = FileUpload.chooseOutputFile("Save MP3 file as...")
+        if not saveFileName:
             return
-        if not filename.endswith(".mp3"):
-            filename = filename + ".mp3"
-        with open(filename, "wb") as file:
-            pass # todo - write
-        pass # todo
+        if not saveFileName.endswith(".mp3"):
+            saveFileName = saveFileName + ".mp3"
+        try:
+            shutil.copyfile(EntryPoints.MAIN_WINDOW.reversedAudioFile, saveFileName)
+        except:
+            self._showSaveFailureMessage()
+            return
+        self._showSaveSuccessMessage()
 
     def _showSaveSuccessMessage(self):
         self.feedbackMessageLabel.setText("Save success")

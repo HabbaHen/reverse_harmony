@@ -314,3 +314,4 @@ pip-selfcheck.json
 resources.qrc
 resources.py
 error_traceback.txt
+temp/*
