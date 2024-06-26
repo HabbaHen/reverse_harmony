@@ -21,7 +21,8 @@ class HarmonyReverser:
     def _fileIsMIDI(filename):
         return filename.endswith(".mid")
 
-    def __init__(self, filename):
+    """ musical_instruments_volumes is dict(instrument.program -> volume)"""
+    def __init__(self, filename, musical_instruments_volumes=None):
         if not path.isdir(self.TEMPORARY_DIRECTORY):
             os.makedirs(self.TEMPORARY_DIRECTORY)
         self._errorMessage = None
@@ -30,9 +31,16 @@ class HarmonyReverser:
             return
         self._midiFileName = filename
         self._midiData = self._readMidiFile(filename)
+        if self._midiData is None:
+            return
+        # list of pairs (musicalInstrument, volume)
+        self._usedMusicalInstrumentsData = self._initializeUsedMusicalInstrumentsData(musical_instruments_volumes)
 
     def getErrorMessage(self):
         return self._errorMessage
+
+    def getListOfUsedMusicalInstruments(self):
+        return sorted([x for (x, _) in self._usedMusicalInstrumentsData], key=lambda x: x.program)
 
     def getOriginalAudioInMp3Format(self):
         if not self._convertMidiToMp3(self._midiFileName, self.TEMPORARY_ORIGINAL_AUDIO_MP3_FILE,
@@ -53,7 +61,18 @@ class HarmonyReverser:
             return None
         return self.TEMPORARY_REVERSED_AUDIO_MP3_FILE
 
-    def _reverseMidi(self, reversedMidiFileName, halfTonesShift):
+    def _initializeUsedMusicalInstrumentsData(self, musicalInstrumentsVolume):
+        if musicalInstrumentsVolume is None:
+            musicalInstrumentsVolume = dict()
+        result = []
+        for instrument in self._midiData.instruments:
+            volume = "TODO" # todo - default volume
+            if instrument.program in musicalInstrumentsVolume:
+                volume = musicalInstrumentsVolume[instrument.program]
+            result.append((instrument, volume))
+        return result
+
+    def _reverseMidi(self, reversedMidiFileName, halfTonesShift): # todo - use self._usedMusicalInstrumentsData
         notes_by_instruments = dict()
         instrument_number = 0
         instrument_types = dict()
