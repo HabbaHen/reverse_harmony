@@ -23,8 +23,8 @@ class AsyncHarmonyReverser(QRunnable):
         if harmonyReverser.getErrorMessage() is not None:
             self._finish(harmonyReverser.getErrorMessage(), None, None)
             return
-        self._finish(None, originalAudio, reversedAudio)
+        self._finish(None, originalAudio, reversedAudio, harmonyReverser.getAudioLengthInSeconds())
 
-    def _finish(self, errorMessage, originalAudio, reversedAudio):
-        self.filePicker.fileUploadResult = (errorMessage, originalAudio, reversedAudio)
+    def _finish(self, errorMessage, originalAudio, reversedAudio, audioLength):
+        self.filePicker.fileUploadResult = (errorMessage, originalAudio, reversedAudio, audioLength)
         self.filePicker.fileUploadFinished.emit()

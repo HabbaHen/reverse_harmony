@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton
 import resources
 from src.desktop_application.CSS import CSS
 from src.desktop_application.EntryPoints import EntryPoints
+from src.desktop_application.ResourcePaths import ResourcePaths
 from src.desktop_application.file_picker.FileDropLineEdit import FileDropLineEdit
 from src.desktop_application.file_picker.FileDropOrPickArea import FileDropOrPickArea
 from src.desktop_application.file_upload.AsyncHarmonyReverser import AsyncHarmonyReverser
@@ -28,8 +29,8 @@ class InputFilePicker(QWidget):
         self.chosenFileLabel.hide()
         self.uploadButton = QPushButton()
         self.uploadButton.setCursor(QCursor(Qt.PointingHandCursor))
-        self.uploadButton.setIcon(QIcon(":/resources/file-upload.svg"))
-        self.uploadButton.setIconSize(QSize(30, height))
+        self.uploadButton.setIcon(QIcon(ResourcePaths.FILE_UPLOAD_ICON))
+        self.uploadButton.setIconSize(QSize(25, height))
         self.uploadButton.setFixedSize(30, height)
         self.uploadButton.clicked.connect(self.onUploadButtonClicked)
         self.crossButton = QPushButton("X")
@@ -49,7 +50,7 @@ class InputFilePicker(QWidget):
         layout.addWidget(self.errorMessageLabel, stretch=0)
         self.loadingLabel = QLabel()
         self.loadingLabel.setFixedSize(height, height)
-        self.loadingGif = QMovie(":/resources/loading.gif")
+        self.loadingGif = QMovie(ResourcePaths.LOADING_GIF)
         self.loadingGif.setScaledSize(QSize(height, height))
         self.loadingLabel.setMovie(self.loadingGif)
         self.loadingLabel.hide()
@@ -59,7 +60,7 @@ class InputFilePicker(QWidget):
         self.endWidget.hide()
         layout.addWidget(self.endWidget, stretch=1)
         self.setLayout(layout)
-        self.fileUploadResult = (None, None, None)
+        self.fileUploadResult = (None, None, None, None)
 
     def onCrossButtonClicked(self):
         EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.hideFeedbackMessage()
@@ -69,6 +70,7 @@ class InputFilePicker(QWidget):
         self.endWidget.hide()
         self.fileDropArea.show()
         EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.setDisabledState()
+        EntryPoints.MAIN_WINDOW.clearAudioPlayers()
 
     def onUploadButtonClicked(self):
         EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.hideFeedbackMessage()
@@ -83,6 +85,7 @@ class InputFilePicker(QWidget):
                 self.fileDropArea.changeFilename(filename)
 
     def onFileUploadStart(self):
+        EntryPoints.MAIN_WINDOW.clearAudioPlayers()
         EntryPoints.MAIN_WINDOW.saveFileAsMp3Stripe.hideFeedbackMessage()
         self.loadingLabel.show()
         self.loadingGif.start()
@@ -103,9 +106,9 @@ class InputFilePicker(QWidget):
         EntryPoints.MAIN_WINDOW.centralWidget().setAcceptDrops(True)
         self.loadingLabel.hide()
         self.loadingGif.stop()
-        errorMessage, originalAudioFile, reversedAudioFile = self.fileUploadResult
+        errorMessage, originalAudioFile, reversedAudioFile, audioLength = self.fileUploadResult
         if errorMessage is not None:
             self.onCrossButtonClicked()
             EntryPoints.MAIN_WINDOW.showErrorMessage(errorMessage)
             return
-        EntryPoints.MAIN_WINDOW.handleAudioSetup(originalAudioFile, reversedAudioFile)
+        EntryPoints.MAIN_WINDOW.handleAudioSetup(originalAudioFile, reversedAudioFile, audioLength)

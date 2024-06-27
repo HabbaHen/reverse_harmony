@@ -8,7 +8,7 @@ from src.desktop_application.EntryPoints import EntryPoints
 class OutputModeSettingsPanel(QWidget):
 
     AUDIO_PREVIEW_MODE = "Audio Preview"
-    SAVE_AUDIO_AS_MP3_MODE = "Save Audio as .mp3"
+    SAVE_AUDIO_AS_MP3_MODE = "Save Reversed Audio as .mp3"
     AUTO_PLAY_CHECKBOX = "Auto-Play Audio"
     START_AHEAD_CHECKBOX = "Start Ahead (by 10 seconds)"
 

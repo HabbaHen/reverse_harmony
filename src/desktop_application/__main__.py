@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QApplication
 from src.backend.HarmonyReverser import HarmonyReverser
 from src.desktop_application.MainWindow import MainWindow
 import resources
+from src.desktop_application.ResourcePaths import ResourcePaths
 from src.desktop_application.file_upload.FileUpload import FileUpload
 
 
@@ -24,7 +25,7 @@ def cleanUp():
 cleanUp()
 app = QApplication([])
 app.setApplicationName("Harmony Reverse Tool")
-app.setWindowIcon(QIcon(":/resources/harmony_reverse_tool_icon.png"))
+app.setWindowIcon(QIcon(ResourcePaths.APPLICATION_ICON))
 app.setStyle('Fusion')
 app.aboutToQuit.connect(cleanUp)
 mainWindow = MainWindow()

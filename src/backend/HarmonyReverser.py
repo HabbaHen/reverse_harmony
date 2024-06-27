@@ -39,6 +39,9 @@ class HarmonyReverser:
     def getErrorMessage(self):
         return self._errorMessage
 
+    def getAudioLengthInSeconds(self):
+        return self._midiData.get_end_time()
+
     def getListOfUsedMusicalInstruments(self):
         return sorted([x for (x, _) in self._usedMusicalInstrumentsData], key=lambda x: x.program)
 

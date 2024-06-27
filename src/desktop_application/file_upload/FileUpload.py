@@ -2,6 +2,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 import resources
 from src.desktop_application.EntryPoints import EntryPoints
+from src.desktop_application.ResourcePaths import ResourcePaths
 
 
 class FileUpload:
@@ -35,7 +36,7 @@ class FileUpload:
     @staticmethod
     def _fixAppIcon():
         if FileUpload.APP is not None:
-            FileUpload.APP.setWindowIcon(QIcon(":/resources/harmony_reverse_tool_icon.png"))
+            FileUpload.APP.setWindowIcon(QIcon(ResourcePaths.APPLICATION_ICON))
 
     def __init__(self):
         raise RuntimeError("FileUpload class is not instantiable")

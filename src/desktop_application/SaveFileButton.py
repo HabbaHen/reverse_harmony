@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel
 
 from src.desktop_application.CSS import CSS
 from src.desktop_application.EntryPoints import EntryPoints
+from src.desktop_application.ResourcePaths import ResourcePaths
 from src.desktop_application.file_upload.FileUpload import FileUpload
 
 
@@ -24,9 +25,9 @@ class SaveFileButton(QWidget):
         layout.addWidget(self.feedbackMessageLabel, stretch=0)
         self.saveFileButton = QPushButton()
         self.saveFileButton.setCursor(QCursor(Qt.PointingHandCursor))
-        saveFileIcon = QIcon(":/resources/save-file.svg")
+        saveFileIcon = QIcon(ResourcePaths.SAVE_FILE_ICON)
         self.saveFileButton.setIcon(saveFileIcon)
-        self.saveFileButton.setIconSize(QSize(width, height))
+        self.saveFileButton.setIconSize(QSize(width - 15, height - 15))
         self.saveFileButton.setFixedSize(width, height)
         layout.addWidget(self.saveFileButton, stretch=0)
         self.setLayout(layout)

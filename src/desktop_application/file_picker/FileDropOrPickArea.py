@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLineEdit, QVBoxLayout, QLabel
 
 from src.desktop_application.EntryPoints import EntryPoints
+from src.desktop_application.ResourcePaths import ResourcePaths
 
 
 class FileDropOrPickArea(QLineEdit):
@@ -18,7 +19,7 @@ class FileDropOrPickArea(QLineEdit):
         self.setReadOnly(True)
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
-        image = QPixmap(":/resources/drag-and-drop.svg").scaledToHeight(height - 15, Qt.SmoothTransformation)
+        image = QPixmap(ResourcePaths.DRAG_AND_DROP_ICON).scaledToHeight(height - 15, Qt.SmoothTransformation)
         dragAndDropImage = QLabel()
         dragAndDropImage.setPixmap(image)
         layout.addWidget(dragAndDropImage)
