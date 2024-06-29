@@ -15,7 +15,7 @@ For other desktop OS, describe in README.md how to build the app manually (insta
 
 <h2> Installing the application </h2>
 
-Check `Releases` of this project on GitHub
+Check [Releases](https://github.com/HabbaHen/reverse_harmony/releases) of this project
 
 <h2> Manuals for building application installers for different operating systems </h2>
 
