@@ -35,6 +35,18 @@ if [ $? -ne 0 ]; then
   rm -rf ./dist
   exit 1
 fi
+APPROXIMATE_APP_SIZE="$(du -ks ./dist/harmony-reverser | cut -f 1)"
+if [ $? -ne 0 ]; then
+  echo "Failed to compute approximate size of the application"
+  rm -rf ./dist
+  exit 1
+fi
+sed -i 's/^Installed-Size: \(.*\)$/Installed-Size: '"${APPROXIMATE_APP_SIZE}"'/' DEBIAN/control
+if [ $? -ne 0 ]; then
+  echo "Failed to setup package approximate size in DEBIAN/control"
+  rm -rf ./dist
+  exit 1
+fi
 DEBIAN_PACKAGE_DIRECTORY="harmony-reverser-${DEBIAN_DESKTOP_APPLICATION_ARCHITECTURE}_${DEBIAN_DESKTOP_APPLICATION_VERSION}"
 if [ -d "${DEBIAN_PACKAGE_DIRECTORY}" ]; then
   rm -rf "${DEBIAN_PACKAGE_DIRECTORY}"
