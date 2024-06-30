@@ -1,0 +1,12 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>resources/audio-volume.svg</file>
+<file>resources/drag-and-drop.svg</file>
+<file>resources/file-upload.svg</file>
+<file>resources/harmony_reverse_tool_icon.png</file>
+<file>resources/loading.gif</file>
+<file>resources/pause-audio.svg</file>
+<file>resources/play-audio.svg</file>
+<file>resources/save-file.svg</file>
+</qresource>
+</RCC>
