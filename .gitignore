@@ -311,10 +311,7 @@ pip-selfcheck.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,venv,pycharm,jupyternotebooks
 
-resources.qrc
-resources.py
 error_traceback.txt
 temp/*
-harmony-reverser*/
-!harmony-reverser.spec
+!harmony-reverser-*.spec
 *.deb

@@ -1,9 +1,16 @@
+<h2> IMPORTANT NOTES </h2>
+
+For development, `Jetbrains PyCharm` was used. It is better to use it for building packages/installers, because it creates virtual environment for you, so you don't need to handle some issues with having some libraries/packages already installed on your system with different versions.
+
+`Python3.10` should be used for building packages/installers of the project across all OS 
+
 <h2> Building .deb package for Linux using script </h2>
 
 You need to have `pyrcc5`, `pyinstaller` and `dpkg-deb` installed:
 
 ```
 sudo apt install pyqt5-dev-tools=5.15.6 pyinstaller=6.8.0 dpkg
+pip install -r requirements.txt
 ```
 
 Run script for building .deb package:
@@ -18,12 +25,23 @@ For example,
 ./build_debian_package.sh 1.0-1 i386
 ```
 
+<h2> Building NSIS installer for Windows </h2>
+
+Before building NSIS installer for Windows, you need to run `compile_resources.sh` script on any system which can run `bash` scripts. Only after the script updates `resources.py` file, you can proceed with building NSIS installer.
+
+```
+TODO CONTINUE FROM THIS PART
+```
+
+
+
 <h2> Building .deb package for Linux manually </h2>
 
 You need to have `pyrcc5`, `pyinstaller` and `dpkg-deb` installed:
 
 ```
 sudo apt install pyqt5-dev-tools=5.15.6 pyinstaller=6.8.0 dpkg
+pip install -r requirements.txt
 ```
 
 Building PyQt resources (icons and such):
