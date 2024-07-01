@@ -1,16 +1,12 @@
 <h1> Current plan </h1>
 
-Rewrite the application in python.
-
-For Windows/Mac/Linux use PyQt for desktop GUI.
-
-For Android/IoS use Kivi for mobile GUI.
-
-For Windows, use NSIS for creating Windows Installer of the application, which includes a script for installing fluidsynth and ffmpeg (see https://stackoverflow.com/questions/74651215/couldnt-find-ffmpeg-or-avconv-python) on Windows.
-
-For Linux and macOs, create a build bash script OR better create .deb for Debian/Ubuntu and .dmg for macOS 
-
-For other desktop OS, describe in README.md how to build the app manually (install fluidsynth and ffmpeg, then run python app using requirements.txt)
+- Current bugs:
+  - Fix bug on Windows with audio slider going to 0 seconds on first play button press (even if it was scrolled)
+  - Fix bug on Windows with audio slider and audio player not being synched properly
+- For Windows, use NSIS for creating Windows Installer of the application, which includes a script for installing fluidsynth and ffmpeg (see https://stackoverflow.com/questions/74651215/couldnt-find-ffmpeg-or-avconv-python) on Windows.
+  - Describe in `build-how-to` the process of building Windows installer
+- For MacOs, create a package using `Packages` application
+- Linux (Debian) - packaging process is done and described
 
 
 <h2> Installing the application </h2>

@@ -21,15 +21,19 @@ def cleanUp():
     if os.path.exists(HarmonyReverser.TEMPORARY_REVERSED_MIDI_FILE):
         os.remove(HarmonyReverser.TEMPORARY_REVERSED_MIDI_FILE)
 
+def runDesktopApp():
+    cleanUp()
+    app = QApplication([])
+    app.setApplicationName("Harmony Reverse Tool")
+    app.setWindowIcon(QIcon(ResourcePaths.APPLICATION_ICON))
+    app.setStyle('Fusion')
+    app.aboutToQuit.connect(cleanUp)
+    mainWindow = MainWindow()
+    mainWindow.show()
+    FileUpload.APP = app  # needed for fix for `app icon missing after file dialog is opened` issue
+    QThreadPool.globalInstance().setMaxThreadCount(4)
+    app.exec()
 
-cleanUp()
-app = QApplication([])
-app.setApplicationName("Harmony Reverse Tool")
-app.setWindowIcon(QIcon(ResourcePaths.APPLICATION_ICON))
-app.setStyle('Fusion')
-app.aboutToQuit.connect(cleanUp)
-mainWindow = MainWindow()
-mainWindow.show()
-FileUpload.APP = app  # needed for fix for `app icon missing after file dialog is opened` issue
-QThreadPool.globalInstance().setMaxThreadCount(4)
-app.exec()
+
+if __name__ == '__main__':
+    runDesktopApp()

@@ -13,15 +13,15 @@ class AsyncHarmonyReverser(QRunnable):
         filename = EntryPoints.MAIN_WINDOW.getCurrentlyChosenFilename()
         harmonyReverser = HarmonyReverser(filename)
         if harmonyReverser.getErrorMessage() is not None:
-            self._finish(harmonyReverser.getErrorMessage(), None, None)
+            self._finish(harmonyReverser.getErrorMessage(), None, None, None)
             return
         originalAudio = harmonyReverser.getOriginalAudioInMp3Format()
         if harmonyReverser.getErrorMessage() is not None:
-            self._finish(harmonyReverser.getErrorMessage(), None, None)
+            self._finish(harmonyReverser.getErrorMessage(), None, None, None)
             return
         reversedAudio = harmonyReverser.getReversedAudioInMp3Format()
         if harmonyReverser.getErrorMessage() is not None:
-            self._finish(harmonyReverser.getErrorMessage(), None, None)
+            self._finish(harmonyReverser.getErrorMessage(), None, None, None)
             return
         self._finish(None, originalAudio, reversedAudio, harmonyReverser.getAudioLengthInSeconds())
 

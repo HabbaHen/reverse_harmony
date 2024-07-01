@@ -18,6 +18,7 @@ class FileDropOrPickArea(QLineEdit):
         self.setFixedHeight(height)
         self.setReadOnly(True)
         layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setAlignment(Qt.AlignCenter)
         image = QPixmap(ResourcePaths.DRAG_AND_DROP_ICON).scaledToHeight(height - 15, Qt.SmoothTransformation)
         dragAndDropImage = QLabel()
