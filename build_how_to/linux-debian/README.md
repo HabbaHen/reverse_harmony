@@ -25,23 +25,6 @@ For example,
 ./build_debian_package.sh 1.0-1 i386
 ```
 
-<h2> Building NSIS installer for Windows </h2>
-
-Before building NSIS installer for Windows, you need to run `compile_resources.sh` script on any system which can run `bash` scripts. Only after the script updates `resources.py` file, you can proceed with building NSIS installer.
-
-Download all required python libraries and `pyinstaller`:
-
-```
-pip install -r requirements.txt
-pip install pyinstaller==6.8.0
-```
-
-Now, compile application into single executable:
-
-```
-
-```
-
 <h2> Building .deb package for Linux manually </h2>
 
 You need to have `pyrcc5`, `pyinstaller` and `dpkg-deb` installed:

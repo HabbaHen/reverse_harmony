@@ -315,3 +315,4 @@ error_traceback.txt
 temp/*
 !harmony-reverser-*.spec
 *.deb
+*.exe
