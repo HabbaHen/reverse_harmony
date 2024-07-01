@@ -29,11 +29,18 @@ For example,
 
 Before building NSIS installer for Windows, you need to run `compile_resources.sh` script on any system which can run `bash` scripts. Only after the script updates `resources.py` file, you can proceed with building NSIS installer.
 
+Download all required python libraries and `pyinstaller`:
+
 ```
-TODO CONTINUE FROM THIS PART
+pip install -r requirements.txt
+pip install pyinstaller==6.8.0
 ```
 
+Now, compile application into single executable:
 
+```
+
+```
 
 <h2> Building .deb package for Linux manually </h2>
 
