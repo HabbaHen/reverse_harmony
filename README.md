@@ -1,8 +1,7 @@
 <h1> Current plan </h1>
 
 - Current bugs:
-  - Fix bug on Windows with audio slider going to 0 seconds on first play button press (even if it was scrolled)
-  - Fix bug on Windows with audio slider and audio player not being synched properly
+  - Windows bug with audio files not being possible to rewrite, which leads to failure on 2nd and next midi uploads, should just add some id on files end
 - For Windows, use NSIS for creating Windows Installer of the application, which includes a script for installing fluidsynth and ffmpeg (see https://stackoverflow.com/questions/74651215/couldnt-find-ffmpeg-or-avconv-python) on Windows.
   - Describe in `build-how-to` the process of building Windows installer
 - For MacOs, create a package using `Packages` application
