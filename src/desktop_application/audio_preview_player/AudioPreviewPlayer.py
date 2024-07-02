@@ -71,7 +71,7 @@ class AudioPreviewPlayer(QWidget):
         layout.addWidget(self.volumeSlider, stretch=0)
         self.setLayout(layout)
         self._audioPlayersGroups = []
-        self.mediaPlayer = QMediaPlayer(flags=QMediaPlayer.LowLatency)
+        self.mediaPlayer = QMediaPlayer()
         self.mediaPlayer.mediaStatusChanged.connect(self.onMediaStatusChanged)
         self.audioDuration = 0
         self.clearAudioFromPlayer()

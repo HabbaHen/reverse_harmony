@@ -19,7 +19,7 @@ pip install pyinstaller==6.8.0
 Now, just run PowerShell script to build NSIS installer:
 
 ```
-.\build_windows.ps1
+.\build_windows_installer.ps1
 ```
 
 
