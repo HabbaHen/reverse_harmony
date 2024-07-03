@@ -1,8 +1,7 @@
 import math
-
-from PyQt5.QtCore import Qt, QSize, QUrl
+import vlc
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QCursor, QIcon
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QWidget, QPushButton, QSlider, QLabel, QHBoxLayout
 
 from src.desktop_application.CSS import CSS
@@ -13,7 +12,7 @@ from src.desktop_application.audio_preview_player.AudioTimer import AudioTimer
 
 class AudioPreviewPlayer(QWidget):
 
-    DEBUG_MODE = False
+    DEBUG_MODE = True
 
     def __init__(self, height):
         super().__init__()
@@ -71,27 +70,54 @@ class AudioPreviewPlayer(QWidget):
         layout.addWidget(self.volumeSlider, stretch=0)
         self.setLayout(layout)
         self._audioPlayersGroups = []
-        self.mediaPlayer = QMediaPlayer()
-        self.mediaPlayer.mediaStatusChanged.connect(self.onMediaStatusChanged)
+        self._vlcInstance = vlc.Instance('--no-video')
+        self.currentAudioTime = 0
         self.audioDuration = 0
+        self.audioMedia = None
+        self.mediaPlayer = None
+        self.restartMediaPlayer()
         self.clearAudioFromPlayer()
-        self.mediaPlayer.positionChanged.connect(self.onMediaPositionChanged)
+        self.restartMediaPlayerAddEvents()
+
+    def restartMediaPlayer(self):
+        self.mediaPlayer = self._vlcInstance.media_player_new()
+        if self.audioMedia is not None:
+            self.mediaPlayer.set_media(self.audioMedia)
+        audioVolume = math.floor((self.volumeSlider.value() / self.volumeSlider.maximum()) * 100)
+        if self.volumeSlider.value() == self.volumeSlider.maximum():
+            audioVolume = 100
+        self.mediaPlayer.audio_set_volume(audioVolume)
+
+    def restartMediaPlayerAddEvents(self):
+        events = self.mediaPlayer.event_manager()
+        events.event_attach(vlc.EventType.MediaPlayerEndReached, self.onMediaFinishedPlaying)
+        events.event_attach(vlc.EventType.MediaPlayerTimeChanged, self.onMediaPositionChanged)
 
     def addToGroup(self, audioPlayersGroup):
         self._audioPlayersGroups.append(audioPlayersGroup)
 
-    def onMediaStatusChanged(self, mediaStatus):
+    def onMediaFinishedPlaying(self, event):
         if self.DEBUG_MODE:
-            print("Media status changed | " + self._getMediaStatus(mediaStatus))
-        if mediaStatus == QMediaPlayer.EndOfMedia:
-            self.onPauseButtonClicked()
+            print("Media finished playing")
+        self.currentAudioTime = self.audioDuration
+        self.restartMediaPlayer()
+        self.onPauseButtonClicked()
+        self.restartMediaPlayerAddEvents()
+        self.audioTimeSlider.setDisabled(True)
 
-    def onMediaPositionChanged(self, audioPosition):
+    def onMediaPositionChanged(self, event):
+        audioPosition = event.u.new_time
+        self.currentAudioTime = audioPosition
         if self.DEBUG_MODE:
-            print("Media position changed | " + self._getMediaStatus(self.mediaPlayer.mediaStatus()))
+            print("Media position changed | New time is " + str(audioPosition))
+            print("Current audio time " + str(self.mediaPlayer.get_time()))
+            print("Current audio time in player " + str(self.currentAudioTime))
+            print("Total audio time " + str(self.mediaPlayer.get_length()))
+            print("Total audio time in player " + str(self.audioDuration))
         self._blockAllSignals()
         mediaDuration = self.audioDuration
         if mediaDuration == 0:
+            self._unblockAllSignals()
             return
         sliderPosition = math.floor((audioPosition / mediaDuration) * self.audioTimeSlider.maximum())
         if audioPosition == mediaDuration:
@@ -105,6 +131,7 @@ class AudioPreviewPlayer(QWidget):
         if self.DEBUG_MODE:
             print("Play button clicked")
         self._blockAllSignals()
+        self.audioTimeSlider.setDisabled(False)
         for playersGroup in self._audioPlayersGroups:
             playersGroup.pauseAllAudioPlayers()
         self.playButton.hide()
@@ -112,8 +139,13 @@ class AudioPreviewPlayer(QWidget):
         startAudioPosition = math.floor((self.audioTimeSlider.value() / self.audioTimeSlider.maximum()) * self.audioDuration)
         if self.audioTimeSlider.value() == self.audioTimeSlider.maximum():
             startAudioPosition = self.audioDuration
-        self.mediaPlayer.setPosition(startAudioPosition)
+        self.currentAudioTime = startAudioPosition
+        self.mediaPlayer.set_time(self.currentAudioTime)
         self.mediaPlayer.play()
+        audioVolume = math.floor((self.volumeSlider.value() / self.volumeSlider.maximum()) * 100)
+        if self.volumeSlider.value() == self.volumeSlider.maximum():
+            audioVolume = 100
+        self.mediaPlayer.audio_set_volume(audioVolume)
         self._unblockAllSignals()
 
     def onPauseButtonClicked(self):
@@ -122,7 +154,7 @@ class AudioPreviewPlayer(QWidget):
         self._blockAllSignals()
         self.pausedButton.hide()
         self.playButton.show()
-        self.mediaPlayer.pause()
+        self.mediaPlayer.set_pause(1)
         self.updateAudioTimers()
         self._unblockAllSignals()
 
@@ -130,7 +162,7 @@ class AudioPreviewPlayer(QWidget):
         if self.DEBUG_MODE:
             print("Updating audio timers")
         self._blockAllSignals()
-        mediaPosition = self.mediaPlayer.position()
+        mediaPosition = self.currentAudioTime
         mediaDuration = self.audioDuration
         sliderPosition = math.floor((mediaPosition / mediaDuration) * self.audioTimeSlider.maximum())
         if mediaPosition == mediaDuration:
@@ -144,12 +176,13 @@ class AudioPreviewPlayer(QWidget):
         if self.DEBUG_MODE:
             print("Audio time slider changed")
         self._blockAllSignals()
-        if self.mediaPlayer.mediaStatus() == QMediaPlayer.NoMedia:
+        if self.mediaPlayer.get_media() is None:
             return
         updatedPosition = math.floor((changedValue / self.audioTimeSlider.maximum()) * self.audioDuration)
         if changedValue == self.audioTimeSlider.maximum():
             updatedPosition = self.audioDuration
-        self.mediaPlayer.setPosition(updatedPosition)
+        self.currentAudioTime = updatedPosition
+        self.mediaPlayer.set_time(updatedPosition)
         timerCurrentSeconds = updatedPosition // 1000
         self.audioTimer.setCurrentTime(timerCurrentSeconds)
         self._unblockAllSignals()
@@ -161,7 +194,7 @@ class AudioPreviewPlayer(QWidget):
         updateVolume = math.floor((changedValue / self.volumeSlider.maximum()) * 100)
         if changedValue == self.volumeSlider.maximum():
             updateVolume = 100
-        self.mediaPlayer.setVolume(updateVolume)
+        self.mediaPlayer.audio_set_volume(updateVolume)
         self._unblockAllSignals()
 
     def setAudioForPlayer(self, audioFile, audioLength, autoplay):
@@ -170,7 +203,8 @@ class AudioPreviewPlayer(QWidget):
         self._blockAllSignals()
         self.audioDuration = math.floor(audioLength * 1000)
         self.mediaPlayer.stop()
-        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(audioFile)))
+        self.audioMedia = self._vlcInstance.media_new(audioFile)
+        self.mediaPlayer.set_media(self.audioMedia)
         self.playButton.setDisabled(False)
         self.pausedButton.setDisabled(False)
         self.pausedButton.hide()
@@ -180,16 +214,21 @@ class AudioPreviewPlayer(QWidget):
             audioVolume = 100
         self.audioTimer.setCurrentAndTotalTimes(0, self.audioDuration // 1000)
         self.updateAudioTimers()
-        self.mediaPlayer.setVolume(audioVolume)
-        self.mediaPlayer.setPosition(0)
+        self.mediaPlayer.audio_set_volume(audioVolume)
+        self.mediaPlayer.set_time(0)
         settingsPanel = EntryPoints.MAIN_WINDOW.outputModeSettingsPanel
         if settingsPanel.getStartAheadIsTurnedOn():
-            self.mediaPlayer.setPosition(min(10_000, self.audioDuration // 3))
+            self.currentAudioTime = min(10_000, self.audioDuration // 3)
             self.updateAudioTimers()
         if settingsPanel.getAutoPlayIsTurnedOn() and autoplay:
             self.playButton.hide()
             self.pausedButton.show()
             self.mediaPlayer.play()
+            self.mediaPlayer.set_time(self.currentAudioTime)
+            audioVolume = math.floor((self.volumeSlider.value() / self.volumeSlider.maximum()) * 100)
+            if self.volumeSlider.value() == self.volumeSlider.maximum():
+                audioVolume = 100
+            self.mediaPlayer.audio_set_volume(audioVolume)
         self._unblockAllSignals()
 
     def clearAudioFromPlayer(self):
@@ -197,7 +236,11 @@ class AudioPreviewPlayer(QWidget):
             print("Cleared audio from player")
         self._blockAllSignals()
         self.mediaPlayer.stop()
-        self.mediaPlayer.setMedia(QMediaContent())
+        if self.mediaPlayer.get_media() is not None:
+            self.mediaPlayer.get_media().release()
+        self.audioDuration = 0
+        self.currentAudioTime = 0
+        self.audioMedia = None
         self.playButton.setDisabled(True)
         self.playButton.show()
         self.pausedButton.setDisabled(True)
@@ -208,31 +251,7 @@ class AudioPreviewPlayer(QWidget):
         self._unblockAllSignals()
 
     def _blockAllSignals(self):
-        self.mediaPlayer.blockSignals(True)
         self.audioTimeSlider.blockSignals(True)
 
     def _unblockAllSignals(self):
-        self.mediaPlayer.blockSignals(False)
         self.audioTimeSlider.blockSignals(False)
-
-    def _getMediaStatus(self, mediaStatus):
-        newStatus = "Unknown Status!"
-        if mediaStatus == QMediaPlayer.UnknownMediaStatus:
-            newStatus = "UnknownMediaStatus"
-        elif mediaStatus == QMediaPlayer.NoMedia:
-            newStatus = "NoMedia"
-        elif mediaStatus == QMediaPlayer.LoadingMedia:
-            newStatus = "LoadingMedia"
-        elif mediaStatus == QMediaPlayer.LoadedMedia:
-            newStatus = "LoadedMedia"
-        elif mediaStatus == QMediaPlayer.StalledMedia:
-            newStatus = "StalledMedia"
-        elif mediaStatus == QMediaPlayer.BufferedMedia:
-            newStatus = "BufferingMedia"
-        elif mediaStatus == QMediaPlayer.BufferedMedia:
-            newStatus = "BufferedMedia"
-        elif mediaStatus == QMediaPlayer.EndOfMedia:
-            newStatus = "EndOfMedia"
-        elif mediaStatus == QMediaPlayer.InvalidMedia:
-            newStatus = "InvalidMedia"
-        return newStatus
