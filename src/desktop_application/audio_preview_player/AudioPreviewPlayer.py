@@ -12,7 +12,7 @@ from src.desktop_application.audio_preview_player.AudioTimer import AudioTimer
 
 class AudioPreviewPlayer(QWidget):
 
-    DEBUG_MODE = True
+    DEBUG_MODE = False
 
     def __init__(self, height):
         super().__init__()

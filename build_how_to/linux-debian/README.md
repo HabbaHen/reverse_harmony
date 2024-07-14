@@ -9,7 +9,7 @@ For development, `Jetbrains PyCharm` was used. It is better to use it for buildi
 You need to have `pyrcc5`, `pyinstaller` and `dpkg-deb` installed:
 
 ```
-sudo apt install pyqt5-dev-tools=5.15.6 pyinstaller=6.8.0 dpkg
+sudo apt install pyqt5-dev-tools dpkg
 pip install -r requirements.txt
 ```
 
@@ -22,7 +22,7 @@ Run script for building .deb package:
 For example,
 
 ```
-./build_debian_package.sh 1.0-1 i386
+./build_debian_package.sh 1.0-1 amd64
 ```
 
 <h2> Building .deb package for Linux manually </h2>

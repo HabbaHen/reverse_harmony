@@ -1,9 +1,9 @@
 Package: harmony-reverser
-Version: 1.0-1
-Architecture: i386
-Depends: ffmpeg (>= 4.4.2), fluidsynth (>= 2.2.5)
+Version: 1.1-1
+Architecture: amd64
+Depends: ffmpeg (>= 4.4.2), fluidsynth (>= 2.2.5), vlc (>= 3.0.16)
 Maintainer: Ivan Romanenko <giovanni.romanenko@gmail.com>
-Installed-Size: 125332
+Installed-Size: 121568
 Description: Simple GUI app for reversing MIDI files
  -
 Homepage: https://github.com/HabbaHen/reverse_harmony
