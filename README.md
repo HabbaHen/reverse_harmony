@@ -14,7 +14,7 @@ Check [Releases](https://github.com/HabbaHen/reverse_harmony/releases) of this p
 
 <h2>Running desktop application using source code</h2>
 
-Install ffmpeg (>= 4.4.2), fluidsynth (>= 2.2.5), python (>= 3.10) and pip on your system, then in root directory run:
+Install ffmpeg (>= 4.4.2), fluidsynth (>= 2.2.5), vlc (>= 3.0.16), python (>= 3.10) and pip on your system, then in root directory run:
 
 ```
 pip install -r requirements.txt
