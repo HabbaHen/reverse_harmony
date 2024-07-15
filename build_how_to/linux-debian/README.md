@@ -43,13 +43,13 @@ Building PyQt resources (icons and such):
 Building PyQt into single executable using PyInstaller:
 
 ```
-pyinstaller harmony-reverser.spec
+pyinstaller harmony-reverser-debian.spec
 ```
 
 OR
 
 ```
-pyinstaller --name="harmony-reverser" --onefile --windowed --add-data="default.sf2:." desktop_application_main.py
+pyinstaller --name="harmony-reverser" --onefile --windowed --add-data="default.sf2:." desktop_application_debian_main.py
 ```
 
 Remove unnecessary directory created by PyInstaller:

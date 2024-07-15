@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['desktop_application_main.py'],
+    ['desktop_application_debian_main.py'],
     pathex=[],
     binaries=[],
     datas=[('default.sf2', '.')],

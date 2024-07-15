@@ -12,7 +12,7 @@ if [ $? -ne 0 ]; then
   echo "Failed to compile resources (images and etc)"
   exit 1
 fi
-pyinstaller harmony-reverser.spec
+pyinstaller harmony-reverser-debian.spec
 if [ $? -ne 0 ]; then
   echo "Failed to compile project using pyinstaller"
   exit 1
