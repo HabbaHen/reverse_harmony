@@ -9,11 +9,10 @@ For development, `Jetbrains PyCharm` was used. It is better to use it for buildi
 
 Before building NSIS installer for Windows, you need to run `compile_resources.sh` script on any system which can run `bash` scripts. Only after the script updates `resources.py` file, you can proceed with building NSIS installer.
 
-Download all required python libraries and `pyinstaller`:
+Download all required python libraries:
 
 ```
 pip install -r requirements.txt
-pip install pyinstaller==6.8.0
 ```
 
 Now, just run PowerShell script to build NSIS installer:

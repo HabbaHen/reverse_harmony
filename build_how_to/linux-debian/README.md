@@ -6,7 +6,7 @@ For development, `Jetbrains PyCharm` was used. It is better to use it for buildi
 
 <h2> Building .deb package for Linux using script </h2>
 
-You need to have `pyrcc5`, `pyinstaller` and `dpkg-deb` installed:
+You need to have `pyrcc5` and `dpkg-deb` installed:
 
 ```
 sudo apt install pyqt5-dev-tools dpkg
