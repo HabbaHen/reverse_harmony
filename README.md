@@ -1,11 +1,9 @@
 <h1> Current plan </h1>
 
-- Current bugs:
-  - Windows bug with audio files not being possible to rewrite, which leads to failure on 2nd and next midi uploads, should just add some id on files end
-- For Windows, use NSIS for creating Windows Installer of the application, which includes a script for installing fluidsynth and ffmpeg (see https://stackoverflow.com/questions/74651215/couldnt-find-ffmpeg-or-avconv-python) on Windows.
+- For Windows, use NSIS for creating Windows Installer of the application, which includes a script for installing fluidsynth, ffmpeg and vlc (see https://stackoverflow.com/questions/74651215/couldnt-find-ffmpeg-or-avconv-python) on Windows.
   - Describe in `build-how-to` the process of building Windows installer
 - For MacOs, create a package using `Packages` application
-- Linux (Debian) - packaging process is done and described
+- Linux (Debian) - packaging process is done and described. Still need to add application into `Start` menu for classic Debian distros
 
 
 <h2> Installing the application </h2>
